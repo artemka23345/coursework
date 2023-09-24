@@ -35,6 +35,8 @@ public class Employee {
 
         allInfo(storage);
 
+
+
     }
     public static void allInfo(Employee[] employees){
         for (int i = 0; i < employees.length; i++) {
