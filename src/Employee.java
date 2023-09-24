@@ -20,7 +20,7 @@ public class Employee {
     private String surname;
     private int salary;
     private int department;
-    static int id = 0;
+    static int id;
 
     public static void main(String[] args) {
         Employee employee1 = new Employee("ivan","Ivanov","Ivanovich",40000,1);
@@ -45,13 +45,11 @@ public class Employee {
     }
 
     public Employee(String name, String patronymic, String surname, int salary, int department) {
-        id++;
         this.name = name;
         this.patronymic = patronymic;
         this.surname = surname;
         this.salary = salary;
         this.department = department;
-
 
     }
     public String getName() {
@@ -83,5 +81,8 @@ public class Employee {
     }
     public void setDepartment(int department) {
         this.department = department;
+    }
+    public static int getId() {
+        return id;
     }
 }
