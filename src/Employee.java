@@ -6,6 +6,7 @@
         6. По умолчанию все поля должны передавать через конструктор (кроме id) и заполняться в нем (включая id, который нужно получить из счетчика).
         7. Создать внутри класса с методом main поле типа Employee[10], которое будет выполнять роль «хранилища» для записей о сотрудниках.
         8. Создать статические методы, которые будут взаимодействовать с массивом и предоставлять результат:
+
         1. Получить список всех сотрудников со всеми имеющимися по ним данными (вывести в консоль значения всех полей (toString)).
         2. Посчитать сумму затрат на зарплаты в месяц.
         3. Найти сотрудника с минимальной зарплатой.
@@ -24,16 +25,22 @@ public class Employee {
     private int id;
 
     public static void main(String[] args) {
-        Employee employee1 = new Employee("ivan","Ivanov","Ivanovich",40000,1);
-        Employee employee2 = new Employee("ivan","Ivanov","Ivanovich",40000,1);
-        Employee employee3 = new Employee("ivan","Ivanov","Ivanovich",40000,1);
-        System.out.println(employee1);
-        System.out.println(employee2);
-        System.out.println(employee3);
+        Employee employee1 = new Employee("Ivan","Ivanovich","Ivanov",40000,1);
+        Employee employee2 = new Employee("Sergej","Sergeevich","Nikolaev",32000,2);
+        Employee employee3 = new Employee("Svetlana ","Вmitreevna ","Petrova",70000,3);
+        Employee employee4 = new Employee("Oleg ","Evgen'evich ","Sergeev",70000,4);
+        Employee employee5 = new Employee("Tat'yana ","Gennad'evna ","Antonova",70000,5);
+
+        Employee[] storage = new Employee[]{employee1,employee2,employee3,employee4,employee5};
+
+        allInfo(storage);
 
     }
-
-
+    public static void allInfo(Employee[] employees){
+        for (int i = 0; i < employees.length; i++) {
+            System.out.println(employees[i]);
+        }
+    }
 
     @Override
     public String toString() {
