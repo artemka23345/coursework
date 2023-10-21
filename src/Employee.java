@@ -21,57 +21,80 @@ public class Employee {
     private String name;
     private String patronymic;
     private String surname;
-    private int salary;
+    private double salary;
     private int department;
     static int count;
-    private int id;
+    private final int id;
 
     public static void main(String[] args) {
         Employee employee1 = new Employee("Ivan", "Ivanovich", "Ivanov", 40000, 1);
-        Employee employee2 = new Employee("Sergej", "Sergeevich", "Nikolaev", 32000, 2);
-        Employee employee3 = new Employee("Svetlana ", "Вmitreevna ", "Petrova", 70000, 3);
+        Employee employee2 = new Employee("Sergej", "Sergeevich", "Nikolaev", 32000, 1);
+        Employee employee3 = new Employee("Svetlana ", "Dmitreevna ", "Petrova", 70000, 3);
         Employee employee4 = new Employee("Oleg ", "Evgen'evich ", "Sergeev", 70000, 4);
         Employee employee5 = new Employee("Tat'yana ", "Gennad'evna ", "Antonova", 70000, 5);
 
-        Employee[] storage = new Employee[]{employee1, employee2, employee3, employee4, employee5};
+        Employee[] storage = new Employee[]{
+                employee1,employee2,employee3,employee4,employee5};
 
-        allInfo(storage);
+
+
         info(storage);
+        allInfo(storage);
+        indexSalary(storage,1.2);
+        allInfo(storage);
 
         System.out.println("Зарплатный фонд: " + monthlySalary(storage));
         System.out.println("Минимальная зарплата: " + minSalary(storage));
         System.out.println("Максимальная зарплата: " + maxSalary(storage));
         System.out.println("Средняя зарплата: " + averageSalary(storage));
 
+        //System.out.println(filterDep(storage, 1));
+        System.out.println("Минимальная зарплата по отделу: " + minSalary(filterDep(storage,1)));
+
+
+
+    }
+    //Constructor
+    public Employee(String name, String patronymic, String surname, int salary, int department) {
+        count++;
+        this.name = name;
+        this.patronymic = patronymic;
+        this.surname = surname;
+        this.salary = salary;
+        this.department = department;
+        this.id = count;
+
     }
 
-    public static int maxSalary(Employee[] employees) {//TODO
-        int result = 0;
-        int[] max = new int[employees.length];
+
+
+    public static double maxSalary(Employee[] employees) {//TODO
+        double result = 0;
+        double[] max = new double[employees.length];
         for (int i = 0; i < employees.length; i++) {
             max[i] = employees[i].getSalary();
         }
-        result = Arrays.stream(max).max().getAsInt();
+        result = Arrays.stream(max).max().getAsDouble();
         return result;
     }
 
-    public static int minSalary(Employee[] employees) {//TODO
-        int result = 0;
-        int[] min = new int[employees.length];
+    public static double minSalary(Employee[] employees) {//TODO
+        double result = 0;
+        double[] min = new double[employees.length];
         for (int i = 0; i < employees.length; i++) {
             min[i] = employees[i].getSalary();
         }
-        result = Arrays.stream(min).min().getAsInt();
+        result = Arrays.stream(min).min().getAsDouble();
         return result;
     }
 
-    public static int averageSalary(Employee[] employees){
-        int avarage = monthlySalary(employees) / count;
+    public static double averageSalary(Employee[] employees){
+        double avarage = monthlySalary(employees) / count;
         return avarage;
     }
 
-    public static int monthlySalary(Employee[] employees) {
-        int result = 0;
+    public static double monthlySalary(Employee[] employees) {
+        double result = 0;
         for (int i = 0; i < employees.length; i++) {
             result = result + employees[i].getSalary();
         }
@@ -105,15 +128,31 @@ public class Employee {
     }
 
 
-    public Employee(String name, String patronymic, String surname, int salary, int department) {
-        count++;
-        this.name = name;
-        this.patronymic = patronymic;
-        this.surname = surname;
-        this.salary = salary;
-        this.department = department;
-        this.id = count;
+    public static Employee[] indexSalary(Employee[] employees, double indexSalary){
+        for (int i = 0; i < employees.length; i++) {
+            Employee[] employee =  employees[i].setSalary(employees[i].getSalary() * indexSalary);
+        }
+        return employees;
+    }
 
+    public static Employee[] filterDep(Employee[] employees, int department){
+        int count = 0;
+        Employee[] filter = new Employee[employees.length];
+        for (int i = 0; i < employees.length; i++) {
+            if (employees[i].getDepartment() == department ) {
+                filter[i] = employees[i];
+            }
+            if(filter[i] != null){
+                count++;
+            }
+        }
+        Employee[] filterNotNull = new Employee[count];
+        for (int i = 0; i < filterNotNull.length; i++) {
+            if (filter[i] != null ) {
+                filterNotNull[i] = filter[i];
+            }
+        }
+        return filterNotNull;
     }
 
     public int getId() {
@@ -144,12 +183,13 @@ public class Employee {
         this.surname = surname;
     }
 
-    public int getSalary() {
+    public double getSalary() {
         return salary;
     }
 
-    public void setSalary(int salary) {
+    public Employee[] setSalary(double salary) {
         this.salary = salary;
+        return new Employee[0];
     }
 
     public int getDepartment() {
