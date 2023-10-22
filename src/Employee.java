@@ -40,7 +40,7 @@ public class Employee {
 
         info(storage);
         allInfo(storage);
-        indexSalary(storage,1.2);
+        indexSalary(storage,1.1);
         allInfo(storage);
 
         System.out.println("Зарплатный фонд: " + monthlySalary(storage));
@@ -48,8 +48,14 @@ public class Employee {
         System.out.println("Максимальная зарплата: " + maxSalary(storage));
         System.out.println("Средняя зарплата: " + averageSalary(storage));
 
-        //System.out.println(filterDep(storage, 1));
+
         System.out.println("Минимальная зарплата по отделу: " + minSalary(filterDep(storage,1)));
+        System.out.println("Максимальная зарплата по отделу: " + maxSalary(filterDep(storage,1)));
+        System.out.println("Средняя зарплата по отделу: " + averageSalaryDep(storage,1));
+        System.out.println("Индекс зарплаты по отделам: " + Arrays.toString(indexSalaryDep(storage,1,1.5)));
+       infoDep(storage,1); //Информация по отделам без отдела
+        allInfo(storage);
+
 
 
 
@@ -72,7 +78,12 @@ public class Employee {
         double result = 0;
         double[] max = new double[employees.length];
         for (int i = 0; i < employees.length; i++) {
-            max[i] = employees[i].getSalary();
+            if (employees[i] == null){
+                continue;
+            }else {
+                max[i] = employees[i].getSalary();
+            }
+
         }
         result = Arrays.stream(max).max().getAsDouble();
         return result;
@@ -82,9 +93,17 @@ public class Employee {
         double result = 0;
         double[] min = new double[employees.length];
         for (int i = 0; i < employees.length; i++) {
-            min[i] = employees[i].getSalary();
+            if (employees[i] != null){
+                min[i] = employees[i].getSalary();
+            }
         }
-        result = Arrays.stream(min).min().getAsDouble();
+        Arrays.sort(min);
+        for (int i = 0; i < min.length; i++) {
+            if(min[i] > 0){
+                result = min[i];
+                break;
+            }
+        }
         return result;
     }
 
@@ -92,23 +111,57 @@ public class Employee {
         double avarage = monthlySalary(employees) / count;
         return avarage;
     }
+    public static double averageSalaryDep(Employee[] employees, int department){
+        double avarage = 0;
+        int count = 0;
+        Employee[] dep = filterDep(employees, department);
+        for (int i = 0; i < dep.length; i++) {
+            if(dep[i] != null){
+                count++;
+               avarage += dep[i].getSalary();
+            }
+        }
+        avarage = avarage / count;
+
+        return avarage;
+    }
 
     public static double monthlySalary(Employee[] employees) {
         double result = 0;
         for (int i = 0; i < employees.length; i++) {
-            result = result + employees[i].getSalary();
+            if (employees[i] != null) {
+                result = result + employees[i].getSalary();
+            }
         }
         return result;
     }
 
     public static void info(Employee[] employees) {
         for (int i = 0; i < employees.length; i++) {
-            System.out.print(employees[i].getName() + " ");
-            System.out.print(employees[i].getSurname() + " ");
-            System.out.println(employees[i].getPatronymic() + " ");
+            if (employees[i] != null) {
+                System.out.print(employees[i].getName() + " ");
+                System.out.print(employees[i].getSurname() + " ");
+                System.out.println(employees[i].getPatronymic() + " ");
+            }
 
         }
     }
+    public static void infoDep(Employee[] employees, int department) {
+        Employee[] tmp = filterDep(employees,department);
+
+        for (int i = 0; i < employees.length; i++) {
+            if (tmp[i] != null){
+                System.out.print(tmp[i].getName() + " ");
+                System.out.print(tmp[i].getSurname() + " ");
+                System.out.println(tmp[i].getPatronymic() + " ");
+                System.out.println(tmp[i].getSalary() + " ");
+                System.out.println(tmp[i].getId() + " ");
+            }
+
+
+        }
+    }
+
     public static void allInfo(Employee[] employees) {
         for (int i = 0; i < employees.length; i++) {
             System.out.println(employees[i]);
@@ -130,29 +183,35 @@ public class Employee {
 
     public static Employee[] indexSalary(Employee[] employees, double indexSalary){
         for (int i = 0; i < employees.length; i++) {
-            Employee[] employee =  employees[i].setSalary(employees[i].getSalary() * indexSalary);
+            if (employees[i] != null){
+                Employee[] employee =  employees[i].setSalary(employees[i].getSalary() * indexSalary);
+            }
+        }
+        return employees;
+    }
+    public static Employee[] indexSalaryDep(Employee[] employees,int department, double indexSalary){
+        Employee[] tmp = filterDep(employees,department);
+        for (int i = 0; i < employees.length; i++) {
+            if (tmp[i] != null){
+                Employee[] employee =  employees[i].setSalary(employees[i].getSalary() * indexSalary);
+            }
+
         }
         return employees;
     }
 
     public static Employee[] filterDep(Employee[] employees, int department){
-        int count = 0;
         Employee[] filter = new Employee[employees.length];
         for (int i = 0; i < employees.length; i++) {
-            if (employees[i].getDepartment() == department ) {
+            if (employees[i] == null) {
+                continue;
+            }
+            else if (employees[i].getDepartment() == department ) {
                 filter[i] = employees[i];
             }
-            if(filter[i] != null){
-                count++;
-            }
+
         }
-        Employee[] filterNotNull = new Employee[count];
-        for (int i = 0; i < filterNotNull.length; i++) {
-            if (filter[i] != null ) {
-                filterNotNull[i] = filter[i];
-            }
-        }
-        return filterNotNull;
+        return filter;
     }
 
     public int getId() {
