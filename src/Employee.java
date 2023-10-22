@@ -55,6 +55,11 @@ public class Employee {
         System.out.println("Индекс зарплаты по отделам: " + Arrays.toString(indexSalaryDep(storage,1,1.5)));
        infoDep(storage,1); //Информация по отделам без отдела
         allInfo(storage);
+        System.out.println("_______________________________________________________________________");
+        employeeWithMoreSalary(storage,70000);
+        System.out.println("_______________________________________________________________________");
+        employeeWithLessSalary(storage, 52800);
+
 
 
 
@@ -212,6 +217,27 @@ public class Employee {
 
         }
         return filter;
+    }
+
+    public static void employeeWithMoreSalary(Employee[] employees,int salary){
+        for (int i = 0; i < employees.length; i++) {
+            if (employees[i] != null) {
+                if (employees[i].getSalary() > salary) {
+                    System.out.println(employees[i]);
+                }
+            }
+        }
+
+    }
+    public static void employeeWithLessSalary(Employee[] employees,int salary){
+        for (int i = 0; i < employees.length; i++) {
+            if (employees[i] != null) {
+                if (employees[i].getSalary() <= salary) {
+                    System.out.println(employees[i]);
+                }
+            }
+        }
+
     }
 
     public int getId() {
