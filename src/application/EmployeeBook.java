@@ -1,4 +1,5 @@
 package application;
+
 import java.util.Arrays;
 
 public class EmployeeBook {
@@ -23,14 +24,15 @@ public class EmployeeBook {
         this.id = count;
 
     }
+
     public EmployeeBook() {
         this.id = count;
     }
 
-    public void addEmployee(String name, String patronymic, String surname, int salary, int department){
-       EmployeeBook newEmployee = new EmployeeBook(name = name,patronymic = patronymic,surname = surname,salary = salary,department = department);
+    public void addEmployee(String name, String patronymic, String surname, int salary, int department) {
+        EmployeeBook newEmployee = new EmployeeBook(name = name, patronymic = patronymic, surname = surname, salary = salary, department = department);
         for (int i = 0; i < storage.length; i++) {
-            if(storage[i] == null){
+            if (storage[i] == null) {
                 storage[i] = newEmployee;
                 break;
             }
@@ -39,27 +41,13 @@ public class EmployeeBook {
     }
 
 
-    public double maxSalary() {//TODO
+    public double maxSalary() {
         double result = 0;
         double[] max = new double[storage.length];
         for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null){
+            if (storage[i] == null) {
                 continue;
-            }else {
-                max[i] = storage[i].getSalary();
-            }
-
-        }
-        result = Arrays.stream(max).max().getAsDouble();
-        return result;
-    }
-    public double maxSalary(EmployeeBook[] storage) {//TODO
-        double result = 0;
-        double[] max = new double[storage.length];
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null){
-                continue;
-            }else {
+            } else {
                 max[i] = storage[i].getSalary();
             }
 
@@ -68,34 +56,32 @@ public class EmployeeBook {
         return result;
     }
 
-    public  double minSalary() {//TODO
+    public double maxSalary(EmployeeBook[] storage) {
         double result = 0;
-        double[] min = new double[storage.length];
+        double[] max = new double[storage.length];
         for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null){
-                min[i] = storage[i].getSalary();
+            if (storage[i] == null) {
+                continue;
+            } else {
+                max[i] = storage[i].getSalary();
             }
+
         }
-        Arrays.sort(min);
-        for (int i = 0; i < min.length; i++) {
-            if(min[i] > 0){
-                result = min[i];
-                break;
-            }
-        }
+        result = Arrays.stream(max).max().getAsDouble();
         return result;
     }
-    public  double minSalary(EmployeeBook[] storage) {//TODO
+
+    public double minSalary() {
         double result = 0;
         double[] min = new double[storage.length];
         for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null){
+            if (storage[i] != null) {
                 min[i] = storage[i].getSalary();
             }
         }
         Arrays.sort(min);
         for (int i = 0; i < min.length; i++) {
-            if(min[i] > 0){
+            if (min[i] > 0) {
                 result = min[i];
                 break;
             }
@@ -103,18 +89,37 @@ public class EmployeeBook {
         return result;
     }
 
-    public double averageSalary(){//TODO
+    public double minSalary(EmployeeBook[] storage) {
+        double result = 0;
+        double[] min = new double[storage.length];
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] != null) {
+                min[i] = storage[i].getSalary();
+            }
+        }
+        Arrays.sort(min);
+        for (int i = 0; i < min.length; i++) {
+            if (min[i] > 0) {
+                result = min[i];
+                break;
+            }
+        }
+        return result;
+    }
+
+    public double averageSalary() {//TODO
         double avarage = monthlySalary() / count;
         return avarage;
     }
-    public double averageSalaryDep(int department){
+
+    public double averageSalaryDep(int department) {
         double avarage = 0;
         int count = 0;
         EmployeeBook[] dep = filterDep(department);
         for (int i = 0; i < dep.length; i++) {
-            if(dep[i] != null){
+            if (dep[i] != null) {
                 count++;
-               avarage += dep[i].getSalary();
+                avarage += dep[i].getSalary();
             }
         }
         avarage = avarage / count;
@@ -142,11 +147,12 @@ public class EmployeeBook {
 
         }
     }
+
     public void infoDep(int department) {
         EmployeeBook[] tmp = filterDep(department);
 
         for (int i = 0; i < storage.length; i++) {
-            if (tmp[i] != null){
+            if (tmp[i] != null) {
                 System.out.print(tmp[i].getName() + " ");
                 System.out.print(tmp[i].getSurname() + " ");
                 System.out.print(tmp[i].getPatronymic() + " ");
@@ -175,19 +181,20 @@ public class EmployeeBook {
     }
 
 
-    public  EmployeeBook[] indexSalary(double indexSalary){
+    public EmployeeBook[] indexSalary(double indexSalary) {
         for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null){
-                EmployeeBook[] employee =  storage[i].setSalary(storage[i].getSalary() * indexSalary);
+            if (storage[i] != null) {
+                EmployeeBook[] employee = storage[i].setSalary(storage[i].getSalary() * indexSalary);
             }
         }
         return storage;
     }
-    public EmployeeBook[] indexSalaryDep(int department, double indexSalary){
+
+    public EmployeeBook[] indexSalaryDep(int department, double indexSalary) {
         EmployeeBook[] tmp = filterDep(department);
         for (int i = 0; i < storage.length; i++) {
-            if (tmp[i] != null){
-                EmployeeBook[] employee =  storage[i].setSalary(storage[i].getSalary() * indexSalary);
+            if (tmp[i] != null) {
+                EmployeeBook[] employee = storage[i].setSalary(storage[i].getSalary() * indexSalary);
                 System.out.println(tmp[i]);
             }
 
@@ -195,13 +202,12 @@ public class EmployeeBook {
         return storage;
     }
 
-    public EmployeeBook[] filterDep(int department){
+    public EmployeeBook[] filterDep(int department) {
         EmployeeBook[] filter = new EmployeeBook[storage.length];
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] == null) {
                 continue;
-            }
-            else if (storage[i].getDepartment() == department ) {
+            } else if (storage[i].getDepartment() == department) {
                 filter[i] = storage[i];
             }
 
@@ -209,7 +215,7 @@ public class EmployeeBook {
         return filter;
     }
 
-    public void employeeWithMoreSalary(int salary){
+    public void employeeWithMoreSalary(int salary) {
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] != null) {
                 if (storage[i].getSalary() > salary) {
@@ -219,7 +225,8 @@ public class EmployeeBook {
         }
 
     }
-    public void employeeWithLessSalary(int salary){
+
+    public void employeeWithLessSalary(int salary) {
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] != null) {
                 if (storage[i].getSalary() <= salary) {
