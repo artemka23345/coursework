@@ -31,7 +31,7 @@ public class EmployeeBook {
     }
 
     public void addEmployee(String name, String patronymic, String surname, int salary, int department) {
-        EmployeeBook newEmployee = new EmployeeBook(name = name, patronymic = patronymic, surname = surname, salary = salary, department = department);
+        EmployeeBook newEmployee = new EmployeeBook(name, patronymic, surname, salary, department);
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] == null) {
                 storage[i] = newEmployee;
@@ -109,23 +109,23 @@ public class EmployeeBook {
     }
 
     public double averageSalary() {//TODO
-        double avarage = monthlySalary() / count;
-        return avarage;
+        double average = monthlySalary() / count;
+        return average;
     }
 
     public double averageSalaryDep(int department) {
-        double avarage = 0;
+        double average = 0;
         int count = 0;
         EmployeeBook[] dep = filterDep(department);
         for (int i = 0; i < dep.length; i++) {
             if (dep[i] != null) {
                 count++;
-                avarage += dep[i].getSalary();
+                average += dep[i].getSalary();
             }
         }
-        avarage = avarage / count;
+        average = average / count;
 
-        return avarage;
+        return average;
     }
 
     public double monthlySalary() {
@@ -299,7 +299,6 @@ public class EmployeeBook {
         }
 
     }
-
 
 
     public int getId() {

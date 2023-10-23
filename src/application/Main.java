@@ -1,7 +1,5 @@
 package application;
 
-import java.util.Arrays;
-
 public class Main {
     public static void main(String[] args) {
         EmployeeBook emp = new EmployeeBook();
@@ -36,9 +34,9 @@ public class Main {
         emp.allInfo();
         emp.deleteEmployee("Tat'yana", "Gennad'evna", "Antonova");
         emp.allInfo();
-        emp.changeEmployee("Svetlana", "Dmitreevna", "Petrova",10);
+        emp.changeEmployee("Svetlana", "Dmitreevna", "Petrova", 10);
         emp.allInfo();
-        emp.changeEmployee("Svetlana", "Dmitreevna", "Petrova",100,4);
+        emp.changeEmployee("Svetlana", "Dmitreevna", "Petrova", 100, 4);
         emp.allInfo();
 
 
