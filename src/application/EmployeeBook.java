@@ -1,6 +1,7 @@
 package application;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class EmployeeBook {
     private String name;
@@ -14,7 +15,7 @@ public class EmployeeBook {
 
 
     //Constructor
-    public EmployeeBook(String name, String patronymic, String surname, int salary, int department) {
+    private EmployeeBook(String name, String patronymic, String surname, int salary, int department) {
         count++;
         this.name = name;
         this.patronymic = patronymic;
@@ -180,6 +181,20 @@ public class EmployeeBook {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EmployeeBook that = (EmployeeBook) o;
+        return Double.compare(salary, that.salary) == 0 && department == that.department && id == that.id && Objects.equals(name, that.name) && Objects.equals(patronymic, that.patronymic) && Objects.equals(surname, that.surname) && Arrays.equals(storage, that.storage);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(name, patronymic, surname, salary, department, id);
+        result = 31 * result + Arrays.hashCode(storage);
+        return result;
+    }
 
     public EmployeeBook[] indexSalary(double indexSalary) {
         for (int i = 0; i < storage.length; i++) {
@@ -236,6 +251,56 @@ public class EmployeeBook {
         }
 
     }
+
+    public EmployeeBook findEmployee(String name, String patronymic, String surname) {
+        EmployeeBook tmp = new EmployeeBook();
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] != null) {
+                if (storage[i].getName().equals(name) && storage[i].getPatronymic().equals(patronymic) && storage[i].getSurname().equals(surname)) {
+                    tmp = storage[i];
+                }
+            }
+        }
+        return tmp;
+    }
+
+    public void deleteEmployee(String name, String patronymic, String surname) {
+        EmployeeBook tmp = findEmployee(name, patronymic, surname);
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] != null) {
+                if (storage[i].equals(tmp)) {
+                    storage[i] = null;
+                }
+            }
+
+        }
+    }
+
+    public void changeEmployee(String name, String patronymic, String surname, int changeSalary) {
+        EmployeeBook tmp = findEmployee(name, patronymic, surname);
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] != null) {
+                if (storage[i].equals(tmp)) {
+                    storage[i].setSalary(changeSalary);
+                }
+            }
+        }
+    }
+
+    public void changeEmployee(String name, String patronymic, String surname, int changeSalary, int changeDep) {
+        EmployeeBook tmp = findEmployee(name, patronymic, surname);
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] != null) {
+                if (storage[i].equals(tmp)) {
+                    storage[i].setSalary(changeSalary);
+                    storage[i].setDepartment(changeDep);
+                }
+            }
+        }
+
+    }
+
+
 
     public int getId() {
         return id;
