@@ -38,6 +38,7 @@ public class Main {
         emp.allInfo();
         emp.changeEmployee("Svetlana", "Dmitreevna", "Petrova", 100, 4);
         emp.allInfo();
+        emp.findEmployeeDep();
 
 
 

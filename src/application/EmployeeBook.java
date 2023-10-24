@@ -10,9 +10,8 @@ public class EmployeeBook {
     private double salary;
     private int department;
     static int count;
-    private final int id;
+    private final int ID;
     private EmployeeBook[] storage = new EmployeeBook[5];
-
 
     //Constructor
     private EmployeeBook(String name, String patronymic, String surname, int salary, int department) {
@@ -22,33 +21,34 @@ public class EmployeeBook {
         this.surname = surname;
         this.salary = salary;
         this.department = department;
-        this.id = count;
+        this.ID = count;
+
 
     }
-
+    //Constructor
     public EmployeeBook() {
-        this.id = count;
+        this.ID = count;
     }
-
     public void addEmployee(String name, String patronymic, String surname, int salary, int department) {
         EmployeeBook newEmployee = new EmployeeBook(name, patronymic, surname, salary, department);
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] == null) {
-                storage[i] = newEmployee;
+                try {
+                    storage[i] = newEmployee;
+                } catch (ArrayIndexOutOfBoundsException e) {
+
+                }
                 break;
             }
         }
 
     }
 
-
     public double maxSalary() {
         double result = 0;
         double[] max = new double[storage.length];
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] == null) {
-                continue;
-            } else {
                 max[i] = storage[i].getSalary();
             }
 
@@ -61,9 +61,7 @@ public class EmployeeBook {
         double result = 0;
         double[] max = new double[storage.length];
         for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                continue;
-            } else {
+            if (storage[i] != null) {
                 max[i] = storage[i].getSalary();
             }
 
@@ -108,8 +106,17 @@ public class EmployeeBook {
         return result;
     }
 
-    public double averageSalary() {//TODO
-        double average = monthlySalary() / count;
+    public double averageSalary() {
+        double average = 0;
+        int count = 0;
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] != null) {
+                count++;
+                average += storage[i].getSalary();
+            }
+        }
+        average = average / count;
+
         return average;
     }
 
@@ -168,6 +175,15 @@ public class EmployeeBook {
             System.out.println(storage[i]);
         }
     }
+    public void info(EmployeeBook[] employeeBook) {
+        for (int i = 0; i < employeeBook.length; i++) {
+            if (employeeBook[i] != null) {
+                System.out.print("         " + employeeBook[i].getName() + " ");
+                System.out.print(employeeBook[i].getSurname() + " ");
+                System.out.println(employeeBook[i].getPatronymic() + " ");
+            }
+        }
+    }
 
     @Override
     public String toString() {
@@ -186,12 +202,12 @@ public class EmployeeBook {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EmployeeBook that = (EmployeeBook) o;
-        return Double.compare(salary, that.salary) == 0 && department == that.department && id == that.id && Objects.equals(name, that.name) && Objects.equals(patronymic, that.patronymic) && Objects.equals(surname, that.surname) && Arrays.equals(storage, that.storage);
+        return Double.compare(salary, that.salary) == 0 && department == that.department && ID == that.ID && Objects.equals(name, that.name) && Objects.equals(patronymic, that.patronymic) && Objects.equals(surname, that.surname) && Arrays.equals(storage, that.storage);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(name, patronymic, surname, salary, department, id);
+        int result = Objects.hash(name, patronymic, surname, salary, department, ID);
         result = 31 * result + Arrays.hashCode(storage);
         return result;
     }
@@ -288,6 +304,7 @@ public class EmployeeBook {
     }
 
     public void changeEmployee(String name, String patronymic, String surname, int changeSalary, int changeDep) {
+
         EmployeeBook tmp = findEmployee(name, patronymic, surname);
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] != null) {
@@ -297,12 +314,22 @@ public class EmployeeBook {
                 }
             }
         }
-
     }
+    public void findEmployeeDep(){
+
+
+            for (int j = 0; j < 5; j++) {
+                System.out.println("Department: " + j);
+                info(filterDep(j));
+
+
+            }
+        }
+
 
 
     public int getId() {
-        return id;
+        return ID;
     }
 
     public String getName() {
