@@ -1,76 +1,36 @@
 package application;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 public class EmployeeBook {
-    private String name;
-    private String patronymic;
-    private String surname;
-    private double salary;
-    private int department;
-    static int count;
-    private final int ID;
-    private EmployeeBook[] storage = new EmployeeBook[5];
+    private Employee[] storage = new Employee[5];
+    //private Employee newEmployee;
 
-    //Constructor
-    private EmployeeBook(String name, String patronymic, String surname, int salary, int department) {
-        count++;
-        this.name = name;
-        this.patronymic = patronymic;
-        this.surname = surname;
-        this.salary = salary;
-        this.department = department;
-        this.ID = count;
-
-
-    }
-    //Constructor
-    public EmployeeBook() {
-        this.ID = count;
-    }
     public void addEmployee(String name, String patronymic, String surname, int salary, int department) {
-        EmployeeBook newEmployee = new EmployeeBook(name, patronymic, surname, salary, department);
+        Employee newEmployee = new Employee(name, patronymic, surname, salary, department);
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] == null) {
-                try {
-                    storage[i] = newEmployee;
-                } catch (ArrayIndexOutOfBoundsException e) {
-
-                }
+                storage[i] = newEmployee;
                 break;
             }
+
         }
 
     }
-
-    public double maxSalary() {
-        double result = 0;
-        double[] max = new double[storage.length];
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                max[i] = storage[i].getSalary();
-            }
-
-        }
-        result = Arrays.stream(max).max().getAsDouble();
-        return result;
-    }
-
-    public double maxSalary(EmployeeBook[] storage) {
+    public double maxSalary(Employee[] storage) {
         double result = 0;
         double[] max = new double[storage.length];
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] != null) {
                 max[i] = storage[i].getSalary();
             }
-
         }
-        result = Arrays.stream(max).max().getAsDouble();
+        Arrays.sort(max);
+        result = max[max.length - 1];
         return result;
     }
 
-    public double minSalary() {
+    public double minSalary(Employee[] storage) {
         double result = 0;
         double[] min = new double[storage.length];
         for (int i = 0; i < storage.length; i++) {
@@ -87,25 +47,6 @@ public class EmployeeBook {
         }
         return result;
     }
-
-    public double minSalary(EmployeeBook[] storage) {
-        double result = 0;
-        double[] min = new double[storage.length];
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                min[i] = storage[i].getSalary();
-            }
-        }
-        Arrays.sort(min);
-        for (int i = 0; i < min.length; i++) {
-            if (min[i] > 0) {
-                result = min[i];
-                break;
-            }
-        }
-        return result;
-    }
-
     public double averageSalary() {
         double average = 0;
         int count = 0;
@@ -119,11 +60,10 @@ public class EmployeeBook {
 
         return average;
     }
-
     public double averageSalaryDep(int department) {
         double average = 0;
         int count = 0;
-        EmployeeBook[] dep = filterDep(department);
+        Employee[] dep = filterDep(department);
         for (int i = 0; i < dep.length; i++) {
             if (dep[i] != null) {
                 count++;
@@ -134,7 +74,6 @@ public class EmployeeBook {
 
         return average;
     }
-
     public double monthlySalary() {
         double result = 0;
         for (int i = 0; i < storage.length; i++) {
@@ -145,19 +84,8 @@ public class EmployeeBook {
         return result;
     }
 
-    public void info() {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                System.out.print(storage[i].getName() + " ");
-                System.out.print(storage[i].getSurname() + " ");
-                System.out.println(storage[i].getPatronymic() + " ");
-            }
-
-        }
-    }
-
     public void infoDep(int department) {
-        EmployeeBook[] tmp = filterDep(department);
+        Employee[] tmp = filterDep(department);
 
         for (int i = 0; i < storage.length; i++) {
             if (tmp[i] != null) {
@@ -169,13 +97,12 @@ public class EmployeeBook {
             }
         }
     }
-
     public void allInfo() {
         for (int i = 0; i < storage.length; i++) {
             System.out.println(storage[i]);
         }
     }
-    public void info(EmployeeBook[] employeeBook) {
+    public void info(Employee[] employeeBook) {
         for (int i = 0; i < employeeBook.length; i++) {
             if (employeeBook[i] != null) {
                 System.out.print("         " + employeeBook[i].getName() + " ");
@@ -184,57 +111,27 @@ public class EmployeeBook {
             }
         }
     }
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "name='" + getName() + '\'' +
-                ", patronymic='" + getPatronymic() + '\'' +
-                ", surname='" + getSurname() + '\'' +
-                ", salary=" + getSalary() +
-                ", department=" + getDepartment() +
-                ", id=" + getId() +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EmployeeBook that = (EmployeeBook) o;
-        return Double.compare(salary, that.salary) == 0 && department == that.department && ID == that.ID && Objects.equals(name, that.name) && Objects.equals(patronymic, that.patronymic) && Objects.equals(surname, that.surname) && Arrays.equals(storage, that.storage);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(name, patronymic, surname, salary, department, ID);
-        result = 31 * result + Arrays.hashCode(storage);
-        return result;
-    }
-
-    public EmployeeBook[] indexSalary(double indexSalary) {
+    public Employee[] indexSalary(double indexSalary) {
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] != null) {
-                EmployeeBook[] employee = storage[i].setSalary(storage[i].getSalary() * indexSalary);
+                Employee[] employee = storage[i].setSalary(storage[i].getSalary() * indexSalary);
             }
         }
         return storage;
     }
-
-    public EmployeeBook[] indexSalaryDep(int department, double indexSalary) {
-        EmployeeBook[] tmp = filterDep(department);
+    public Employee[] indexSalaryDep(int department, double indexSalary) {
+        Employee[] tmp = filterDep(department);
         for (int i = 0; i < storage.length; i++) {
             if (tmp[i] != null) {
-                EmployeeBook[] employee = storage[i].setSalary(storage[i].getSalary() * indexSalary);
+                Employee[] employee = storage[i].setSalary(storage[i].getSalary() * indexSalary);
                 System.out.println(tmp[i]);
             }
 
         }
         return storage;
     }
-
-    public EmployeeBook[] filterDep(int department) {
-        EmployeeBook[] filter = new EmployeeBook[storage.length];
+    public Employee[] filterDep(int department) {
+        Employee[] filter = new Employee[storage.length];
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] == null) {
                 continue;
@@ -245,7 +142,6 @@ public class EmployeeBook {
         }
         return filter;
     }
-
     public void employeeWithMoreSalary(int salary) {
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] != null) {
@@ -256,7 +152,6 @@ public class EmployeeBook {
         }
 
     }
-
     public void employeeWithLessSalary(int salary) {
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] != null) {
@@ -267,9 +162,8 @@ public class EmployeeBook {
         }
 
     }
-
-    public EmployeeBook findEmployee(String name, String patronymic, String surname) {
-        EmployeeBook tmp = new EmployeeBook();
+    public Employee findEmployee(String name, String patronymic, String surname) {
+        Employee tmp = new Employee();
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] != null) {
                 if (storage[i].getName().equals(name) && storage[i].getPatronymic().equals(patronymic) && storage[i].getSurname().equals(surname)) {
@@ -279,9 +173,8 @@ public class EmployeeBook {
         }
         return tmp;
     }
-
     public void deleteEmployee(String name, String patronymic, String surname) {
-        EmployeeBook tmp = findEmployee(name, patronymic, surname);
+        Employee tmp = findEmployee(name, patronymic, surname);
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] != null) {
                 if (storage[i].equals(tmp)) {
@@ -291,9 +184,8 @@ public class EmployeeBook {
 
         }
     }
-
     public void changeEmployee(String name, String patronymic, String surname, int changeSalary) {
-        EmployeeBook tmp = findEmployee(name, patronymic, surname);
+        Employee tmp = findEmployee(name, patronymic, surname);
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] != null) {
                 if (storage[i].equals(tmp)) {
@@ -302,10 +194,9 @@ public class EmployeeBook {
             }
         }
     }
-
     public void changeEmployee(String name, String patronymic, String surname, int changeSalary, int changeDep) {
 
-        EmployeeBook tmp = findEmployee(name, patronymic, surname);
+        Employee tmp = findEmployee(name, patronymic, surname);
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] != null) {
                 if (storage[i].equals(tmp)) {
@@ -316,60 +207,17 @@ public class EmployeeBook {
         }
     }
     public void findEmployeeDep(){
-
-
-            for (int j = 0; j < 5; j++) {
-                System.out.println("Department: " + j);
-                info(filterDep(j));
-
-
-            }
+        for (int j = 0; j < 5; j++) {
+            System.out.println("Department: " + j);
+            info(filterDep(j));
         }
-
-
-
-    public int getId() {
-        return ID;
     }
 
-    public String getName() {
-        return name;
+    public Employee[] getStorage() {
+        return storage;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public double getSalary() {
-        return salary;
-    }
-
-    public EmployeeBook[] setSalary(double salary) {
-        this.salary = salary;
-        return new EmployeeBook[0];
-    }
-
-    public int getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(int department) {
-        this.department = department;
+    public void setStorage(Employee[] storage) {
+        this.storage = storage;
     }
 }
