@@ -9,6 +9,15 @@ public class EmployeeBook {
          storage = new Employee[capacity];
     }
 
+
+    public Employee[] getStorage() {
+        return storage;
+    }
+
+    public void setStorage(Employee[] storage) {
+        this.storage = storage;
+    }
+
     public void addEmployee(String name, String patronymic, String surname, int salary, int department) {
         Employee newEmployee = new Employee(name, patronymic, surname, salary, department);
         for (int i = 0; i < storage.length; i++) {
@@ -215,11 +224,5 @@ public class EmployeeBook {
         }
     }
 
-    public Employee[] getStorage() {
-        return storage;
-    }
 
-    public void setStorage(Employee[] storage) {
-        this.storage = storage;
-    }
 }
