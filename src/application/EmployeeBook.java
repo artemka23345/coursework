@@ -11,7 +11,6 @@ public class EmployeeBook {
 
     public void addEmployee(String name, String patronymic, String surname, int salary, int department) {
         Employee newEmployee = new Employee(name, patronymic, surname, salary, department);
-        String msg = "Работник добавлен";
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] == null) {
                 storage[i] = newEmployee;
