@@ -3,17 +3,20 @@ package application;
 import java.util.Arrays;
 
 public class EmployeeBook {
-    private Employee[] storage = new Employee[5];
-    //private Employee newEmployee;
+    private Employee[] storage;
+
+    public EmployeeBook(int capacity) {
+         storage = new Employee[capacity];
+    }
 
     public void addEmployee(String name, String patronymic, String surname, int salary, int department) {
         Employee newEmployee = new Employee(name, patronymic, surname, salary, department);
+        String msg = "Работник добавлен";
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] == null) {
                 storage[i] = newEmployee;
                 break;
             }
-
         }
 
     }

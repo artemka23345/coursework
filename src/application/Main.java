@@ -2,7 +2,7 @@ package application;
 
 public class Main {
     public static void main(String[] args) {
-        EmployeeBook emp = new EmployeeBook();
+        EmployeeBook emp = new EmployeeBook(7);
         emp.toString();
         emp.addEmployee("Ivan", "Ivanovich", "Ivanov", 40000, 1);
         emp.addEmployee("Sergej", "Sergeevich", "Nikolaev", 32000, 1);
@@ -41,6 +41,8 @@ public class Main {
         emp.allInfo();
         emp.findEmployeeDep();
         emp.allInfo();
+        
+
 
 
 
