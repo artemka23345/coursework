@@ -2,7 +2,7 @@ package application;
 
 import java.util.Arrays;
 
-public class EmployeeBook  {
+public class EmployeeBook {
     private Employee[] storage;
 
     public EmployeeBook(int capacity) {
